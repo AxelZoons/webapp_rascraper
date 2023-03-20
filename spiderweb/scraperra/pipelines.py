@@ -6,6 +6,7 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+from pathlib import Path
 import xlsxwriter
 
 
@@ -15,6 +16,7 @@ class ScraperraPipeline:
         self.wb = None
         self.ws = None
         self.current_row_index = 0
+        self.THIS_FOLDER = Path(__file__).parent.resolve()
 
     def process_item(self, item, spider):
 
@@ -37,7 +39,7 @@ class ScraperraPipeline:
 
     def open_spider(self, spider):
         spider.logger.info('IN OPEN SPIDER')
-        self.wb = xlsxwriter.Workbook('outputnew.xlsx')
+        self.wb = xlsxwriter.Workbook(f'{self.THIS_FOLDER}/outputnew.xlsx')
         self.ws = self.wb.add_worksheet()
 
     def close_spider(self, spider):
