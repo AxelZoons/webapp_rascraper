@@ -39,7 +39,7 @@ class ScraperraPipeline:
 
     def open_spider(self, spider):
         spider.logger.info('IN OPEN SPIDER')
-        self.wb = xlsxwriter.Workbook(f'{self.THIS_FOLDER}/outputnew.xlsx')
+        self.wb = xlsxwriter.Workbook('scraperra\\outputnew.xlsx')
         self.ws = self.wb.add_worksheet()
 
     def close_spider(self, spider):

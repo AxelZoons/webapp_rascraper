@@ -22,8 +22,8 @@ def home(request):
             process.wait()
 
             # download the XLSX file
-            file_path = os.path.join(os.getcwd(), f'{THIS_FOLDER}/outputnew.xlsx')
-            response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename=f'{THIS_FOLDER}outputnew.xlsx')
+            file_path = os.path.join(os.getcwd(), 'scraperra\\outputnew.xlsx')
+            response = FileResponse(open(file_path, 'rb'), as_attachment=True, filename='scraperra\\outputnew.xlsx')
             return response
         except Exception as e:
                 print('Error', str(e))
