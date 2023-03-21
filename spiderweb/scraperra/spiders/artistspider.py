@@ -1,5 +1,6 @@
 from scrapy.exceptions import CloseSpider
 import re
+# from datetime import datetime
 from datetime import datetime
 import scrapy
 import datetime
@@ -303,24 +304,21 @@ class PostsSpider(scrapy.Spider):
         venue = response.xpath('//*[@id="__next"]/div[2]/header/div/div[2]//div/ul/li[1]/div//span/text()')[1].get()
         acts = response.xpath('//*[@id="__next"]/div[2]/section[1]/div/section[1]/div/div/div[2]/ul/li[1]/div/span/a/span/text()').getall()
 
-        date = re.sub(r'^.*?, ', '', date)
-
         promotors = ', '.join(promotors)
 
-        if len(date) < 5:
-            print(f'XXXXXXXXXXXXXXXXXX {date} XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
-            date = f'01-01-{date}'
+        date = date.replace(",", "").replace(".", "").replace(" ", "")
+        try:
+            date = datetime.strptime(date, "%d%b%Y").strftime("%d-%m-%Y")
+        except ValueError:
+            try:
+                date = datetime.strptime(date, "%a%b%d%Y").strftime("%d-%m-%Y")
+            except ValueError:
+                date = datetime.strptime(date, "%b%d%Y").strftime("%d-%m-%Y")
+        except:
+            print(f'something went wrong when handeling date:{date}')
 
-        elif len(date) >= 15:
-            date = date[5:]
-
-        elif date[-4: -2] == '20':
-            date = datetime.strptime(date, '%b %d, %Y').strftime('%d-%m-%Y')
-        else:
-            date = datetime.strptime(date, '%d %b').strftime('%d-%m') + '-2023'
 
         country_code = country_link.split('/')[-2].upper()
-
         try:
             country = country_codes[country_code]
         except:
